@@ -3,7 +3,7 @@ namespace SakuraPanel;
 
 class Utils {
 	
-	const PANEL_VERSION = "1.0.0";
+	const PANEL_VERSION = "1.0.1";
 	
 	public static function reCAPTCHA($response)
 	{
@@ -99,5 +99,78 @@ class Utils {
 			Header("HTTP/1.1 403 Forbidden");
 			exit("Invalid CSRF Token");
 		}
+	}
+	
+	// 输出禁止错误 Header
+	public static function sendServerForbidden($msg)
+	{
+		Header("HTTP/1.1 403 {$msg}");
+		Header("Content-type: text/plain", true);
+		echo json_encode(Array(
+			'status' => 403,
+			'message' => $msg
+		), JSON_UNESCAPED_UNICODE);
+		exit;
+	}
+
+	// 输出未找到错误 Header
+	public static function sendServerNotFound($msg)
+	{
+		Header("HTTP/1.1 404 {$msg}");
+		Header("Content-type: text/plain", true);
+		echo json_encode(Array(
+			'status' => 404,
+			'message' => $msg
+		), JSON_UNESCAPED_UNICODE);
+		exit;
+	}
+
+	// 输出未找到错误 Header
+	public static function sendServerBadRequest($msg)
+	{
+		Header("HTTP/1.1 400 {$msg}");
+		Header("Content-type: text/plain", true);
+		echo json_encode(Array(
+			'status' => 400,
+			'message' => $msg
+		), JSON_UNESCAPED_UNICODE);
+		exit;
+	}
+
+	// 输出正常消息
+	public static function sendLoginSuccessful($msg)
+	{
+		Header("Content-type: text/plain", true, 200);
+		echo json_encode(Array(
+			'status' => 200,
+			'success' => true,
+			'message' => $msg
+		), JSON_UNESCAPED_UNICODE);
+		exit;
+	}
+
+	// 输出正常消息
+	public static function sendCheckSuccessful($msg)
+	{
+		Header("Content-type: text/plain", true, 200);
+		echo json_encode(Array(
+			'status' => 200,
+			'success' => true,
+			'message' => $msg
+		), JSON_UNESCAPED_UNICODE);
+		exit;
+	}
+
+	// Json 格式消息输出
+	public static function sendJson($data)
+	{
+		Header("Content-type: text/plain", true, 200);
+		echo json_encode($data, JSON_UNESCAPED_UNICODE);
+		exit;
+	}
+
+	public static function getBoolean($str)
+	{
+		return $str == "true";
 	}
 }
